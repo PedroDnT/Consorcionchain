@@ -35,6 +35,6 @@ module.exports = {
     timeout: 40000
   },
   etherscan: {
-    apiKey: "NIN2PYRPWXMY4Y1WK5CD21H9Z75QQ6XN5H"
+    apiKey: process.env.etherscan_api_key
   }
 };
