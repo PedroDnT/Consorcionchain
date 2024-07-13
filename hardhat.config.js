@@ -49,9 +49,7 @@ module.exports = {
       }
     ]
   },
-  verify: {
-    etherscan: {
-      apiKey: process.env.LACHAIN_API_KEY
-    }
+  sourcify: {
+    enabled: true
   }
 };
