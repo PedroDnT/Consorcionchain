@@ -1,5 +1,5 @@
 import { ethers } from 'ethers';
-import EnhancedConsorcioManagerABI from '../artifacts/contracts/EnhancedConsorcioManager.sol/EnhancedConsorcioManager.json';
+import EnhancedConsorcioManagerABI from '../contracts/EnhancedConsorcioManager.json';
 
 const contractAddress = 'YOUR_DEPLOYED_CONTRACT_ADDRESS';
 
