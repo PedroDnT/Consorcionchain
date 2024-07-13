@@ -25,8 +25,8 @@ contract EnhancedConsórcio {
     mapping(address => uint) public contributions;
     mapping(uint => address) public recipients;
     uint public currentMonth;
-    RandomNumberOracle public oracle;
-    Token public token;
+    RandomNumberOracle oracle;
+    Token token;
 
     constructor(uint _duration, uint _contributionAmount, uint _participantCount, address _manager) {
         duration = _duration;
@@ -48,7 +48,7 @@ contract EnhancedConsórcio {
         contributions[msg.sender] += msg.value;
         totalFunds += msg.value;
 
-        if (totalFunds <= contributionAmount * participantCount * duration * 20 / 100) {
+        if (totalFunds <= 20 * contributionAmount * participantCount * duration / 100) {
             token.mint(msg.sender, 2);  // Double reward for early participants
         } else {
             token.mint(msg.sender, 1);
@@ -67,7 +67,7 @@ contract EnhancedConsórcio {
         payable(recipient).transfer(address(this).balance);
     }
 
-    function defaultParticipant(address participant) public {
+    function default(address participant) public {
         require(participants[participant], "Not a participant");
         require(contributions[participant] > 0, "No contributions from participant");
         participants[participant] = false;
