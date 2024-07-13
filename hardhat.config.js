@@ -1,6 +1,6 @@
 require('dotenv').config();
 require("@nomiclabs/hardhat-ethers");
-require("@nomiclabs/hardhat-etherscan");
+// require("@nomiclabs/hardhat-etherscan");
 
 module.exports = {
   defaultNetwork: "laTestnet",
