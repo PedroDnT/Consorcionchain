@@ -2,7 +2,9 @@ require('dotenv').config();
 const hre = require("hardhat");
 
 async function main() {
-  console.log("Deploying with the account:", process.env.PRIVATE_KEY);
+  const [deployer] = await hre.ethers.getSigners();
+  console.log("Deploying with the account:", deployer.address);
+
   // Get the contract factory
   const EnhancedConsorcioManager = await hre.ethers.getContractFactory("EnhancedConsorcioManager");
 
@@ -13,6 +15,13 @@ async function main() {
   await enhancedConsorcioManager.deployed();
 
   console.log("EnhancedConsorcioManager deployed to:", enhancedConsorcioManager.address);
+
+  // Verify the contract on Etherscan
+  console.log("Verifying contract on Etherscan...");
+  await hre.run("verify:verify", {
+    address: enhancedConsorcioManager.address,
+    constructorArguments: [],
+  });
 }
 
 // Run the deployment
