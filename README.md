@@ -34,12 +34,13 @@ DConsórcio is a blockchain-based version of the traditional Brazilian consórci
 - `getRandomNumber`: Generate and return a random number for fair selection.
 - `callback`: Receive the random number in the Consórcio contract.
 
-### D. Token Contract (ERC20 or ERC721)
-Purpose: Represents the contributions and the right to receive funds within the consórcio.
+### 4. Token Contract (ERC20 or ERC721)
 
-Functions:
-- mint: Mints new tokens representing a participant’s share in the consórcio.
-- transfer: Allows the transfer of tokens between participants.
+**Purpose:** Represent contributions and rights to receive funds within the consórcio.
+
+**Key Functions:**
+- `mint`: Create new tokens representing a participant's share.
+- `transfer`: Allow token transfers between participants.
 
 ## Contract Interactions
 
