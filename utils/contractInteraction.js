@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 import EnhancedConsorcioManagerABI from '../contracts/EnhancedConsorcioManager.json';
 
-const contractAddress = 'YOUR_DEPLOYED_CONTRACT_ADDRESS';
+const contractAddress = '0x84F9B232D70d14f6523c9c5Bc5bd2304Ff41DA71';
 
 export const getContract = async () => {
   if (typeof window.ethereum !== 'undefined') {

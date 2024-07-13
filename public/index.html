@@ -42,6 +42,8 @@
     <input id="defaultParticipantAddress" type="text" placeholder="Participant Address">
     <button onclick="defaultParticipant()">Default Participant</button>
 
+    <div id="status"></div>
+
     <script>
         let provider;
         let signer;
@@ -53,51 +55,121 @@
         ];
 
         async function connectWallet() {
-            provider = new ethers.providers.Web3Provider(window.ethereum);
-            await provider.send("eth_requestAccounts", []);
-            signer = provider.getSigner();
-            contract = new ethers.Contract(contractAddress, contractABI, signer);
+            try {
+                provider = new ethers.providers.Web3Provider(window.ethereum);
+                await provider.send("eth_requestAccounts", []);
+                signer = provider.getSigner();
+                contract = new ethers.Contract(contractAddress, contractABI, signer);
+                updateStatus("Wallet connected successfully");
+            } catch (error) {
+                updateStatus("Error connecting wallet: " + error.message);
+            }
         }
 
         async function createConsorcio() {
-            await connectWallet();
-            const duration = document.getElementById("duration").value;
-            const contributionAmount = document.getElementById("contributionAmount").value;
-            const participantCount = document.getElementById("participantCount").value;
-            await contract.createConsórcio(duration, contributionAmount, participantCount);
+            try {
+                await connectWallet();
+                const duration = document.getElementById("duration").value;
+                const contributionAmount = document.getElementById("contributionAmount").value;
+                const participantCount = document.getElementById("participantCount").value;
+                const tx = await contract.createConsórcio(duration, contributionAmount, participantCount);
+                await tx.wait();
+                updateStatus("Consórcio created successfully");
+            } catch (error) {
+                updateStatus("Error creating Consórcio: " + error.message);
+            }
         }
 
         async function joinConsorcio() {
-            await connectWallet();
-            const consorcioId = document.getElementById("joinConsorcioId").value;
-            await contract.joinConsórcio(consorcioId);
+            try {
+                await connectWallet();
+                const consorcioId = document.getElementById("joinConsorcioId").value;
+                const tx = await contract.joinConsórcio(consorcioId);
+                await tx.wait();
+                updateStatus("Joined Consórcio successfully");
+            } catch (error) {
+                updateStatus("Error joining Consórcio: " + error.message);
+            }
         }
 
         async function contribute() {
-            await connectWallet();
-            const consorcioId = document.getElementById("contributeConsorcioId").value;
-            const amount = document.getElementById("contributeAmount").value;
-            await contract.contributeToConsórcio(consorcioId, { value: ethers.utils.parseEther(amount) });
+            try {
+                await connectWallet();
+                const consorcioId = document.getElementById("contributeConsorcioId").value;
+                const amount = document.getElementById("contributeAmount").value;
+                const tx = await contract.contributeToConsórcio(consorcioId, { value: ethers.utils.parseEther(amount) });
+                await tx.wait();
+                updateStatus("Contribution made successfully");
+            } catch (error) {
+                updateStatus("Error making contribution: " + error.message);
+            }
         }
 
         async function selectRecipient() {
-            await connectWallet();
-            const consorcioId = document.getElementById("selectRecipientConsorcioId").value;
-            await contract.selectRecipient(consorcioId);
+            try {
+                await connectWallet();
+                const consorcioId = document.getElementById("selectRecipientConsorcioId").value;
+                const tx = await contract.selectRecipient(consorcioId);
+                await tx.wait();
+                updateStatus("Recipient selected successfully");
+            } catch (error) {
+                updateStatus("Error selecting recipient: " + error.message);
+            }
         }
 
         async function distributeFunds() {
-            await connectWallet();
-            const consorcioId = document.getElementById("distributeFundsConsorcioId").value;
-            await contract.distributeFunds(consorcioId);
+            try {
+                await connectWallet();
+                const consorcioId = document.getElementById("distributeFundsConsorcioId").value;
+                const tx = await contract.distributeFunds(consorcioId);
+                await tx.wait();
+                updateStatus("Funds distributed successfully");
+            } catch (error) {
+                updateStatus("Error distributing funds: " + error.message);
+            }
         }
 
         async function defaultParticipant() {
-            await connectWallet();
-            const consorcioId = document.getElementById("defaultConsorcioId").value;
-            const participantAddress = document.getElementById("defaultParticipantAddress").value;
-            await contract.defaultParticipant(consorcioId, participantAddress);
+            try {
+                await connectWallet();
+                const consorcioId = document.getElementById("defaultConsorcioId").value;
+                const participantAddress = document.getElementById("defaultParticipantAddress").value;
+                const tx = await contract.defaultParticipant(consorcioId, participantAddress);
+                await tx.wait();
+                updateStatus("Participant defaulted successfully");
+            } catch (error) {
+                updateStatus("Error defaulting participant: " + error.message);
+            }
         }
+
+        function updateStatus(message) {
+            document.getElementById("status").innerText = message;
+        }
+
+        // Event listeners
+        contract.on("ConsórcioCreated", (consórcioId, consórcioAddress) => {
+            updateStatus(`New Consórcio created with ID: ${consórcioId} at address: ${consórcioAddress}`);
+        });
+
+        contract.on("ParticipantJoined", (consórcioId, participant) => {
+            updateStatus(`Participant ${participant} joined Consórcio ${consórcioId}`);
+        });
+
+        contract.on("ContributionMade", (consórcioId, participant, amount) => {
+            updateStatus(`Participant ${participant} contributed ${ethers.utils.formatEther(amount)} ETH to Consórcio ${consórcioId}`);
+        });
+
+        contract.on("RecipientSelected", (consórcioId, recipient) => {
+            updateStatus(`Recipient ${recipient} selected for Consórcio ${consórcioId}`);
+        });
+
+        contract.on("FundsDistributed", (consórcioId, recipient, amount) => {
+            updateStatus(`${ethers.utils.formatEther(amount)} ETH distributed to ${recipient} in Consórcio ${consórcioId}`);
+        });
+
+        contract.on("ParticipantDefaulted", (consórcioId, participant) => {
+            updateStatus(`Participant ${participant} defaulted in Consórcio ${consórcioId}`);
+        });
     </script>
 </body>
 </html>
