@@ -1,10 +1,10 @@
 .aider*
 node_modules
-.env
 
 # Frontend related files
 .next/
 out/
+.env
 *.log
 *.lock
 *.cache
