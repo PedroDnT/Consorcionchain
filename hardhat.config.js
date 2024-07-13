@@ -43,8 +43,8 @@ module.exports = {
         network: "laTestnet",
         chainId: 418,
         urls: {
-          apiURL: "https://explorer.testnet.lachain.network/api",
-          browserURL: "https://explorer.testnet.lachain.network"
+          apiURL: "https://blockscout.testnet.lachain.network/api",
+          browserURL: "https://blockscout.testnet.lachain.network"
         }
       }
     ]

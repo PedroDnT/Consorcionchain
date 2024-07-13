@@ -3,7 +3,7 @@ pragma solidity ^0.8.9;
 
 contract RandomNumberOracle {
     function getRandomNumber() public view returns (uint) {
-        return uint(keccak256(abi.encodePacked(block.timestamp, block.difficulty)));
+        return uint(keccak256(abi.encodePacked(block.timestamp, block.prevrandao)));
     }
 }
 
