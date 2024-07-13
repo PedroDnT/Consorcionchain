@@ -27,6 +27,5 @@
     "ethers": "^5.7.2",
     "typescript": "^5.0.4",
     "@types/mocha": "^9.0.0",
-    "hardhat-sourcify": "^0.1.0"
   }
 }
