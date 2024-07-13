@@ -17,10 +17,11 @@ async function main() {
   console.log("EnhancedConsorcioManager deployed to:", enhancedConsorcioManager.address);
 
   // Verify the contract on Etherscan
-  console.log("Verifying contract on Etherscan...");
+  console.log("Verifying contract on LAChain Explorer...");
   await hre.run("verify:verify", {
     address: enhancedConsorcioManager.address,
     constructorArguments: [],
+    network: "laTestnet"
   });
 }
 

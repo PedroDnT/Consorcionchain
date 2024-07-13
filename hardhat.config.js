@@ -17,7 +17,7 @@ module.exports = {
     }
   },
   solidity: {
-    version: "0.8.9",
+    version: "0.8.19",
     settings: {
       optimizer: {
         enabled: true,
@@ -35,6 +35,23 @@ module.exports = {
     timeout: 40000
   },
   etherscan: {
-    apiKey: process.env.etherscan_api_key
+    apiKey: {
+      laTestnet: process.env.LACHAIN_API_KEY
+    },
+    customChains: [
+      {
+        network: "laTestnet",
+        chainId: 418,
+        urls: {
+          apiURL: "https://explorer.testnet.lachain.network/api",
+          browserURL: "https://explorer.testnet.lachain.network"
+        }
+      }
+    ]
+  },
+  verify: {
+    etherscan: {
+      apiKey: process.env.LACHAIN_API_KEY
+    }
   }
 };
