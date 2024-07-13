@@ -3,11 +3,16 @@ require("@nomiclabs/hardhat-ethers");
 require("@nomiclabs/hardhat-etherscan");
 
 module.exports = {
-  defaultNetwork: "lachain",
+  defaultNetwork: "laTestnet",
   networks: {
     hardhat: {},
     lachain: {
       url: "https://rpc1.mainnet.lachain.network",
+      accounts: [process.env.PRIVATE_KEY]
+    },
+    laTestnet: {
+      url: "https://rpc.testnet.lachain.network",
+      chainId: 418,
       accounts: [process.env.PRIVATE_KEY]
     }
   },
