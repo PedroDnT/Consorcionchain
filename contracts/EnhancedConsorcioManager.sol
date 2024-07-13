@@ -118,10 +118,6 @@ contract EnhancedConsórcioManager {
         emit ParticipantDefaulted(consórcioId, participant);
     }
 
-    function defaultParticipant(uint consórcioId, address participant) public {
-        EnhancedConsórcio(consórcios[consórcioId]).defaultParticipant(participant);
-    }
-
     // Add events for better tracking and frontend integration
     event ConsórcioCreated(uint indexed consórcioId, address consórcioAddress);
     event ParticipantJoined(uint indexed consórcioId, address participant);
