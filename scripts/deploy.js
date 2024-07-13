@@ -1,6 +1,8 @@
+require('dotenv').config();
 const hre = require("hardhat");
 
 async function main() {
+  console.log("Deploying with the account:", process.env.PRIVATE_KEY);
   // Get the contract factory
   const EnhancedConsorcioManager = await hre.ethers.getContractFactory("EnhancedConsorcioManager");
 
