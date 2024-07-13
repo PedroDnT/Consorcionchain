@@ -15,7 +15,7 @@ contract Token {
     }
 }
 
-contract EnhancedConsórcio {
+contract EnhancedConsorcio {
     uint public duration;
     uint public contributionAmount;
     uint public participantCount;
@@ -75,54 +75,54 @@ contract EnhancedConsórcio {
     }
 }
 
-contract EnhancedConsórcioManager {
-    mapping(uint => address) public consórcios;
-    uint public consórcioCount;
+contract EnhancedConsorcioManager {
+    mapping(uint => address) public consorcios;
+    uint public consorcioCount;
 
-    function createConsórcio(uint duration, uint contributionAmount, uint participantCount) public {
-        EnhancedConsórcio newConsórcio = new EnhancedConsórcio(duration, contributionAmount, participantCount, msg.sender);
-        consórcios[consórcioCount] = address(newConsórcio);
-        emit ConsórcioCreated(consórcioCount, address(newConsórcio));
-        consórcioCount++;
+    function createConsorcio(uint duration, uint contributionAmount, uint participantCount) public {
+        EnhancedConsorcio newConsorcio = new EnhancedConsorcio(duration, contributionAmount, participantCount, msg.sender);
+        consorcios[consorcioCount] = address(newConsorcio);
+        emit ConsorcioCreated(consorcioCount, address(newConsorcio));
+        consorcioCount++;
     }
 
-    function joinConsórcio(uint consórcioId) public {
-        EnhancedConsórcio(consórcios[consórcioId]).join(msg.sender);
-        emit ParticipantJoined(consórcioId, msg.sender);
+    function joinConsorcio(uint consorcioId) public {
+        EnhancedConsorcio(consorcios[consorcioId]).join(msg.sender);
+        emit ParticipantJoined(consorcioId, msg.sender);
     }
 
-    function getConsórcioDetails(uint consórcioId) public view returns (address) {
-        return consórcios[consórcioId];
+    function getConsorcioDetails(uint consorcioId) public view returns (address) {
+        return consorcios[consorcioId];
     }
 
-    function contributeToConsórcio(uint consórcioId) public payable {
-        EnhancedConsórcio(consórcios[consórcioId]).contribute{value: msg.value}();
-        emit ContributionMade(consórcioId, msg.sender, msg.value);
+    function contributeToConsorcio(uint consorcioId) public payable {
+        EnhancedConsorcio(consorcios[consorcioId]).contribute{value: msg.value}();
+        emit ContributionMade(consorcioId, msg.sender, msg.value);
     }
 
-    function selectRecipient(uint consórcioId) public {
-        EnhancedConsórcio(consórcios[consórcioId]).selectRecipient();
-        address recipient = EnhancedConsórcio(consórcios[consórcioId]).recipients(EnhancedConsórcio(consórcios[consórcioId]).currentMonth() - 1);
-        emit RecipientSelected(consórcioId, recipient);
+    function selectRecipient(uint consorcioId) public {
+        EnhancedConsorcio(consorcios[consorcioId]).selectRecipient();
+        address recipient = EnhancedConsorcio(consorcios[consorcioId]).recipients(EnhancedConsorcio(consorcios[consorcioId]).currentMonth() - 1);
+        emit RecipientSelected(consorcioId, recipient);
     }
 
-    function distributeFunds(uint consórcioId) public {
-        address recipient = EnhancedConsórcio(consórcios[consórcioId]).recipients(EnhancedConsórcio(consórcios[consórcioId]).currentMonth() - 1);
-        uint amount = address(consórcios[consórcioId]).balance;
-        EnhancedConsórcio(consórcios[consórcioId]).distributeFunds();
-        emit FundsDistributed(consórcioId, recipient, amount);
+    function distributeFunds(uint consorcioId) public {
+        address recipient = EnhancedConsorcio(consorcios[consorcioId]).recipients(EnhancedConsorcio(consorcios[consorcioId]).currentMonth() - 1);
+        uint amount = address(consorcios[consorcioId]).balance;
+        EnhancedConsorcio(consorcios[consorcioId]).distributeFunds();
+        emit FundsDistributed(consorcioId, recipient, amount);
     }
 
-    function defaultParticipant(uint consórcioId, address participant) public {
-        EnhancedConsórcio(consórcios[consórcioId]).defaultParticipant(participant);
-        emit ParticipantDefaulted(consórcioId, participant);
+    function defaultParticipant(uint consorcioId, address participant) public {
+        EnhancedConsorcio(consorcios[consorcioId]).defaultParticipant(participant);
+        emit ParticipantDefaulted(consorcioId, participant);
     }
 
     // Add events for better tracking and frontend integration
-    event ConsórcioCreated(uint indexed consórcioId, address consórcioAddress);
-    event ParticipantJoined(uint indexed consórcioId, address participant);
-    event ContributionMade(uint indexed consórcioId, address participant, uint amount);
-    event RecipientSelected(uint indexed consórcioId, address recipient);
-    event FundsDistributed(uint indexed consórcioId, address recipient, uint amount);
-    event ParticipantDefaulted(uint indexed consórcioId, address participant);
+    event ConsorcioCreated(uint indexed consorcioId, address consorcioAddress);
+    event ParticipantJoined(uint indexed consorcioId, address participant);
+    event ContributionMade(uint indexed consorcioId, address participant, uint amount);
+    event RecipientSelected(uint indexed consorcioId, address recipient);
+    event FundsDistributed(uint indexed consorcioId, address recipient, uint amount);
+    event ParticipantDefaulted(uint indexed consorcioId, address participant);
 }
