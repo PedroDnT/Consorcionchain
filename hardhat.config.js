@@ -1,6 +1,7 @@
 require('dotenv').config();
 require("@nomiclabs/hardhat-ethers");
 require("hardhat-sourcify");
+const { ethers } = require("ethers");
 
 module.exports = {
   defaultNetwork: "laTestnet",
