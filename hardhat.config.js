@@ -50,6 +50,8 @@ module.exports = {
     ]
   },
   sourcify: {
-    enabled: true
+    enabled: true,
+    apiUrl: "https://sourcify.dev/server",
+    browserUrl: "https://repo.sourcify.dev"
   }
 };
