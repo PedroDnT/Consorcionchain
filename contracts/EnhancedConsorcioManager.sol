@@ -82,11 +82,13 @@ contract EnhancedConsórcioManager {
     function createConsórcio(uint duration, uint contributionAmount, uint participantCount) public {
         EnhancedConsórcio newConsórcio = new EnhancedConsórcio(duration, contributionAmount, participantCount, msg.sender);
         consórcios[consórcioCount] = address(newConsórcio);
+        emit ConsórcioCreated(consórcioCount, address(newConsórcio));
         consórcioCount++;
     }
 
     function joinConsórcio(uint consórcioId) public {
         EnhancedConsórcio(consórcios[consórcioId]).join(msg.sender);
+        emit ParticipantJoined(consórcioId, msg.sender);
     }
 
     function getConsórcioDetails(uint consórcioId) public view returns (address) {
@@ -95,14 +97,25 @@ contract EnhancedConsórcioManager {
 
     function contributeToConsórcio(uint consórcioId) public payable {
         EnhancedConsórcio(consórcios[consórcioId]).contribute{value: msg.value}();
+        emit ContributionMade(consórcioId, msg.sender, msg.value);
     }
 
     function selectRecipient(uint consórcioId) public {
         EnhancedConsórcio(consórcios[consórcioId]).selectRecipient();
+        address recipient = EnhancedConsórcio(consórcios[consórcioId]).recipients(EnhancedConsórcio(consórcios[consórcioId]).currentMonth() - 1);
+        emit RecipientSelected(consórcioId, recipient);
     }
 
     function distributeFunds(uint consórcioId) public {
+        address recipient = EnhancedConsórcio(consórcios[consórcioId]).recipients(EnhancedConsórcio(consórcios[consórcioId]).currentMonth() - 1);
+        uint amount = address(consórcios[consórcioId]).balance;
         EnhancedConsórcio(consórcios[consórcioId]).distributeFunds();
+        emit FundsDistributed(consórcioId, recipient, amount);
+    }
+
+    function defaultParticipant(uint consórcioId, address participant) public {
+        EnhancedConsórcio(consórcios[consórcioId]).defaultParticipant(participant);
+        emit ParticipantDefaulted(consórcioId, participant);
     }
 
     function defaultParticipant(uint consórcioId, address participant) public {
