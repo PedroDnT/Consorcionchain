@@ -9,7 +9,7 @@
     "lint": "next lint",
     "install-all": "npm install && npx hardhat",
     "compile": "tsc",
-    "deploy": "npx hardhat run scripts/deploy.js --network laTestnet"
+    "deploy": "npx hardhat run scripts/deploy.ts --network laTestnet"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
