@@ -1,6 +1,7 @@
 require('dotenv').config();
 require("@nomiclabs/hardhat-ethers");
-require("@nomiclabs/hardhat-etherscan");
+require("@nomiclabs/hardhat-ethers");
+require("hardhat-sourcify");
 
 module.exports = {
   defaultNetwork: "laTestnet",
@@ -33,21 +34,6 @@ module.exports = {
   },
   mocha: {
     timeout: 40000
-  },
-  etherscan: {
-    apiKey: {
-      laTestnet: process.env.LACHAIN_API_KEY
-    },
-    customChains: [
-      {
-        network: "laTestnet",
-        chainId: 418,
-        urls: {
-          apiURL: "https://testexplorer.lachain.network/api",
-          browserURL: "https://testexplorer.lachain.network"
-        }
-      }
-    ]
   },
   sourcify: {
     enabled: true,
