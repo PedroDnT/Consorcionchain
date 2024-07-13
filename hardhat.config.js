@@ -1,6 +1,5 @@
 require('dotenv').config();
 require("@nomiclabs/hardhat-ethers");
-require("@nomiclabs/hardhat-ethers");
 require("hardhat-sourcify");
 
 module.exports = {
