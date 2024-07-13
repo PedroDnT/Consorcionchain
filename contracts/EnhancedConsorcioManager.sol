@@ -67,7 +67,7 @@ contract EnhancedConsórcio {
         payable(recipient).transfer(address(this).balance);
     }
 
-    function default(address participant) public {
+    function defaultParticipant(address participant) public {
         require(participants[participant], "Not a participant");
         require(contributions[participant] > 0, "No contributions from participant");
         participants[participant] = false;
@@ -108,4 +108,12 @@ contract EnhancedConsórcioManager {
     function defaultParticipant(uint consórcioId, address participant) public {
         EnhancedConsórcio(consórcios[consórcioId]).defaultParticipant(participant);
     }
+
+    // Add events for better tracking and frontend integration
+    event ConsórcioCreated(uint indexed consórcioId, address consórcioAddress);
+    event ParticipantJoined(uint indexed consórcioId, address participant);
+    event ContributionMade(uint indexed consórcioId, address participant, uint amount);
+    event RecipientSelected(uint indexed consórcioId, address recipient);
+    event FundsDistributed(uint indexed consórcioId, address recipient, uint amount);
+    event ParticipantDefaulted(uint indexed consórcioId, address participant);
 }
