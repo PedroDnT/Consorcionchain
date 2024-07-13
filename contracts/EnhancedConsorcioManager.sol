@@ -1,22 +1,77 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
+contract RandomNumberOracle {
+    function getRandomNumber() public view returns (uint) {
+        return uint(keccak256(abi.encodePacked(block.timestamp, block.difficulty)));
+    }
+}
+
+contract Token {
+    mapping(address => uint) public balances;
+
+    function mint(address to, uint amount) public {
+        balances[to] += amount;
+    }
+}
+
 contract EnhancedConsórcio {
-    address public admin;
     uint public duration;
     uint public contributionAmount;
     uint public participantCount;
+    uint public totalFunds;
+    address public manager;
+    mapping(address => bool) public participants;
+    mapping(address => uint) public contributions;
+    mapping(uint => address) public recipients;
+    uint public currentMonth;
+    RandomNumberOracle public oracle;
+    Token public token;
 
-    constructor(uint _duration, uint _contributionAmount, uint _participantCount, address _admin) {
-        admin = _admin;
+    constructor(uint _duration, uint _contributionAmount, uint _participantCount, address _manager) {
         duration = _duration;
         contributionAmount = _contributionAmount;
         participantCount = _participantCount;
+        manager = _manager;
+        oracle = new RandomNumberOracle();
+        token = new Token();
     }
 
     function join(address participant) public {
-        // Implementation for joining a consórcio
-        // This is a placeholder and needs to be implemented based on specific requirements
+        require(participants[participant] == false, "Already a participant");
+        participants[participant] = true;
+    }
+
+    function contribute() public payable {
+        require(participants[msg.sender], "Not a participant");
+        require(msg.value == contributionAmount, "Incorrect contribution amount");
+        contributions[msg.sender] += msg.value;
+        totalFunds += msg.value;
+
+        if (totalFunds <= contributionAmount * participantCount * duration * 20 / 100) {
+            token.mint(msg.sender, 2);  // Double reward for early participants
+        } else {
+            token.mint(msg.sender, 1);
+        }
+    }
+
+    function selectRecipient() public {
+        uint random = oracle.getRandomNumber();
+        address recipient = address(uint160(random % participantCount));
+        recipients[currentMonth] = recipient;
+        currentMonth++;
+    }
+
+    function distributeFunds() public {
+        address recipient = recipients[currentMonth - 1];
+        payable(recipient).transfer(address(this).balance);
+    }
+
+    function defaultParticipant(address participant) public {
+        require(participants[participant], "Not a participant");
+        require(contributions[participant] > 0, "No contributions from participant");
+        participants[participant] = false;
+        contributions[participant] = 0;  // Forfeit the contributions
     }
 }
 
