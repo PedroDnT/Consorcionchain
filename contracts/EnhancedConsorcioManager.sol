@@ -92,4 +92,20 @@ contract EnhancedConsórcioManager {
     function getConsórcioDetails(uint consórcioId) public view returns (address) {
         return consórcios[consórcioId];
     }
+
+    function contributeToConsórcio(uint consórcioId) public payable {
+        EnhancedConsórcio(consórcios[consórcioId]).contribute{value: msg.value}();
+    }
+
+    function selectRecipient(uint consórcioId) public {
+        EnhancedConsórcio(consórcios[consórcioId]).selectRecipient();
+    }
+
+    function distributeFunds(uint consórcioId) public {
+        EnhancedConsórcio(consórcios[consórcioId]).distributeFunds();
+    }
+
+    function defaultParticipant(uint consórcioId, address participant) public {
+        EnhancedConsórcio(consórcios[consórcioId]).defaultParticipant(participant);
+    }
 }

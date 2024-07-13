@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Consórcio Simulator</title>
+    <script src="https://cdn.ethers.io/lib/ethers-5.0.umd.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        button { margin: 5px; padding: 5px 10px; }
+        input { margin: 5px; padding: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Enhanced Consórcio Simulator</h1>
+    
+    <h2>Create Consórcio</h2>
+    <input id="duration" type="number" placeholder="Duration">
+    <input id="contributionAmount" type="number" placeholder="Contribution Amount">
+    <input id="participantCount" type="number" placeholder="Participant Count">
+    <button onclick="createConsorcio()">Create Consórcio</button>
+
+    <h2>Join Consórcio</h2>
+    <input id="joinConsorcioId" type="number" placeholder="Consórcio ID">
+    <button onclick="joinConsorcio()">Join Consórcio</button>
+
+    <h2>Contribute</h2>
+    <input id="contributeConsorcioId" type="number" placeholder="Consórcio ID">
+    <input id="contributeAmount" type="number" placeholder="Amount">
+    <button onclick="contribute()">Contribute</button>
+
+    <h2>Select Recipient</h2>
+    <input id="selectRecipientConsorcioId" type="number" placeholder="Consórcio ID">
+    <button onclick="selectRecipient()">Select Recipient</button>
+
+    <h2>Distribute Funds</h2>
+    <input id="distributeFundsConsorcioId" type="number" placeholder="Consórcio ID">
+    <button onclick="distributeFunds()">Distribute Funds</button>
+
+    <h2>Default Participant</h2>
+    <input id="defaultConsorcioId" type="number" placeholder="Consórcio ID">
+    <input id="defaultParticipantAddress" type="text" placeholder="Participant Address">
+    <button onclick="defaultParticipant()">Default Participant</button>
+
+    <script>
+        let provider;
+        let signer;
+        let contract;
+
+        const contractAddress = "YOUR_CONTRACT_ADDRESS_HERE";
+        const contractABI = [
+            // Add your contract ABI here
+        ];
+
+        async function connectWallet() {
+            provider = new ethers.providers.Web3Provider(window.ethereum);
+            await provider.send("eth_requestAccounts", []);
+            signer = provider.getSigner();
+            contract = new ethers.Contract(contractAddress, contractABI, signer);
+        }
+
+        async function createConsorcio() {
+            await connectWallet();
+            const duration = document.getElementById("duration").value;
+            const contributionAmount = document.getElementById("contributionAmount").value;
+            const participantCount = document.getElementById("participantCount").value;
+            await contract.createConsórcio(duration, contributionAmount, participantCount);
+        }
+
+        async function joinConsorcio() {
+            await connectWallet();
+            const consorcioId = document.getElementById("joinConsorcioId").value;
+            await contract.joinConsórcio(consorcioId);
+        }
+
+        async function contribute() {
+            await connectWallet();
+            const consorcioId = document.getElementById("contributeConsorcioId").value;
+            const amount = document.getElementById("contributeAmount").value;
+            await contract.contributeToConsórcio(consorcioId, { value: ethers.utils.parseEther(amount) });
+        }
+
+        async function selectRecipient() {
+            await connectWallet();
+            const consorcioId = document.getElementById("selectRecipientConsorcioId").value;
+            await contract.selectRecipient(consorcioId);
+        }
+
+        async function distributeFunds() {
+            await connectWallet();
+            const consorcioId = document.getElementById("distributeFundsConsorcioId").value;
+            await contract.distributeFunds(consorcioId);
+        }
+
+        async function defaultParticipant() {
+            await connectWallet();
+            const consorcioId = document.getElementById("defaultConsorcioId").value;
+            const participantAddress = document.getElementById("defaultParticipantAddress").value;
+            await contract.defaultParticipant(consorcioId, participantAddress);
+        }
+    </script>
+</body>
+</html>
